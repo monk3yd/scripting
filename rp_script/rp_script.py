@@ -28,12 +28,12 @@ def main():
     # df to list of dicts, each element is list needs to be a different docs
     df_clean = df_filtered.to_dict(orient="records")
 
-    # Open document
+    # Open docx document
     doc_template = docx.Document("MODELO RECURSO ALZA PRECIO BASE 2022.docx")
-    # doc_template = docx.Document("MODELO RECURSO ALZA PRECIO BASE 2022 copy.docx")
 
-    # For each client in dataframe
+    # For each client in dataframe create a file
     for client in df_clean:
+        client_doc = docx.Document()
         # Check all client's data
         for key, replace_str in client.items():
             print(key, '->', replace_str) 
@@ -48,7 +48,11 @@ def main():
             for paragraph in doc_template.paragraphs:
                 new_paragraph = paragraph_replace_text(paragraph, regex, replace_str)
                 pprint.pprint(list(r.text for r in paragraph.runs))
+                client_doc.add_paragraph(list(r.text for r in new_paragraph.runs))
             # exit() # Exit when getting first paragraph
+
+        client_doc.save(f"{client['RECURRENTE']}.docx")
+        exit() # Exit when creating first client doc
 
 # Thanks to @scanny for this function and library, you can find it at https://github.com/python-openxml/python-docx/issues/30#issuecomment-879593691
 def paragraph_replace_text(paragraph, regex, replace_str):
@@ -100,7 +104,6 @@ def paragraph_replace_text(paragraph, regex, replace_str):
     #     if run.text == "":
     #         r = run._r
     #         r.getparent().remove(r)
-        break
     return paragraph
  
 
