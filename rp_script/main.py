@@ -49,9 +49,8 @@ def main():
         doc_template.render(context)
 
         # Save client own doc
-        doc_template.save("generated_test.docx")
+        doc_template.save(f"C.A. DE {client_data['CORTE']} - {client_data['RECURRENTE']} con {client_data['ISAPRE']}.docx")
         
-        exit()
 
 if __name__ == "__main__":
     main()
