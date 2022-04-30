@@ -1,10 +1,12 @@
+from pprint import pprint
 import pandas as pd
 from docxtpl import DocxTemplate
 
 def main():
-    # Open csv and read all cases
+    # Open csv and read all clients data
     df = pd.read_csv("BD - Protecciones.csv")[[
-        # "TERMINADA",
+        "INGRESAR",
+        "TIPO",
         "CORTE",
         "RECURRENTE",
         "CI",
@@ -12,25 +14,30 @@ def main():
         "RUT ISAPRE",
         "REP ISAPRE",
         "DOMICILIO ISAPRE",
-        "FECHA CARTA/FUN",
+        "FECHA CARTA",
         "PLAN",
-        "% ALZA",
+        "ALZA",
         "PB",
         "PBR",
-        "MES OBJECIÓN"
+        "MES OBJECIÓN",
+        # "TERMINADA",
     ]]
 
-    # Clean df --- extract NAPB only
-    df_filtered = df.dropna(subset=["FECHA CARTA/FUN"])
+    # Filter df by INGRESAR column value
+    df_filtered = df[df["INGRESAR"]]
 
     # df to list of dicts, each element is list needs to be a different docs
     clients_data_df = df_filtered.to_dict(orient="records")
 
     # Open docx document
-    # doc_template = docx.Document("MODELO RECURSO ALZA PRECIO BASE 2022.docx")
     doc_template = DocxTemplate("template.docx")
+
+    # --- Each dictionary element within this list represents a client ---
     for client_data in clients_data_df:
-        print(client_data)
+        # --- Each key of the client dictionary represents the jinja syntax used in the
+        # --- word template.docx file as a placeholder.
+        # --- Each value of the client dictionary represents the value that is going to
+        # --- substitute the placeholder.
         context = {
             'CORTE': client_data['CORTE'],
             'RECURRENTE': client_data['RECURRENTE'],
@@ -40,16 +47,20 @@ def main():
             'REP_ISAPRE': client_data['REP ISAPRE'],
             'DOMICILIO_ISAPRE': client_data['DOMICILIO ISAPRE'],
             'PLAN': client_data['PLAN'],
-            'ALZA': client_data['% ALZA'],  # TODO fix 
-            'FECHA_CARTA': client_data['FECHA CARTA/FUN'],  # TODO fix
+            'ALZA': client_data['ALZA'], 
+            'FECHA_CARTA': client_data['FECHA CARTA'],
             'PB': client_data['PB'],
             'PBR': client_data['PBR'],
-            'MES_OBJECIÓN': client_data["MES OBJECIÓN"]  # TODO fix
+            'MES_OBJECIÓN': client_data["MES OBJECIÓN"]
         }
+
+        pprint(context)
         doc_template.render(context)
 
         # Save client own doc
-        doc_template.save(f"C.A. DE {client_data['CORTE']} - {client_data['RECURRENTE']} con {client_data['ISAPRE']}.docx")
+        doc_template.save(f"docx_autoescrito/C.A. DE {client_data['CORTE']} - {client_data['RECURRENTE']} con {client_data['ISAPRE']}.docx")
+    
+
         
 
 if __name__ == "__main__":
