@@ -1,3 +1,4 @@
+import os
 import time
 
 from selenium import webdriver
@@ -82,7 +83,7 @@ class SeleniumBot():
         self.browser.execute_script("arguments[0].scrollIntoView();", ingreso_form_display_btn)
         self.browser.execute_script("arguments[0].click();", ingreso_form_display_btn)
 
-        # --- working, iterate just once till here
+        # --- Iterate just once till here
         print("Start filling form for upload...")
         
         # self.browser.implicitly_wait(10)
@@ -107,10 +108,49 @@ class SeleniumBot():
         corte = self.browser.find_element(By.XPATH, "//div[@id='select2-result-label-27']")
         corte.click()
 
-        fijar = self.browser.find_element(By.XPATH, "//input[@id='id_check_fijar_mod_tribunal']")
-        fijar.click()
+        fijar_competencia_btn = self.browser.find_element(By.XPATH, "//input[@id='id_check_fijar_mod_tribunal']")
+        fijar_competencia_btn.click()
 
+        libro_dropdown = WebDriverWait(self.browser, timeout=10).until(
+            EC.element_to_be_clickable(self.browser.find_element(By.XPATH, "//div[@id='s2id_autogen40']/a[1]"))
+        )
+        libro_dropdown.click()
+        libro = self.browser.find_element(By.XPATH, "//div[@id='select2-result-label-50']")
+        libro.click()
 
+        tipo_recurso_dropdown = WebDriverWait(self.browser, timeout=10).until(
+            EC.element_to_be_clickable(self.browser.find_element(By.XPATH, "//div[@id='s2id_autogen42']/a[1]"))
+        )
+        tipo_recurso_dropdown.click()
+        tipo_recurso = self.browser.find_element(By.XPATH, "//div[@id='select2-result-label-57']")
+        tipo_recurso.click()
+
+        fijar_materia_btn = self.browser.find_element(By.XPATH, "//input[@id='id_check_fijar_mod_materia']")
+        fijar_materia_btn.click()
+
+        # --- Litigantes
+        tipo_sujeto_dropdown = WebDriverWait(self.browser, timeout=10).until(
+            EC.element_to_be_clickable(self.browser.find_element(By.XPATH, "//div[@id='s2id_autogen59']/a[1]"))
+        )
+        tipo_sujeto_dropdown.click()
+        ab_recurrente = self.browser.find_element(By.XPATH, "//div[@id='select2-result-label-65']")
+        ab_recurrente.click()
+
+        rut_input = WebDriverWait(self.browser, timeout=10).until(
+            EC.element_to_be_clickable(self.browser.find_element(By.XPATH, "//input[@data-bind='value: rutSel, disable:bloqueoRutComp']"))
+        )
+        rut_input.send_keys(str(os.environ['rut']) + Keys.RETURN)
+
+        # self.browser.implicitly_wait(5)
+        time.sleep(5)
+
+        fijar_datos_ab_recurrente_btn = self.browser.find_element(By.XPATH, "//input[@id='id_check_fijar_mod_lit']")
+        fijar_datos_ab_recurrente_btn.click()
+
+        agreagar_litigante_btn = self.browser.find_element(By.XPATH, "//button[@data-bind='click: validarIngresoLitigante']")
+        agreagar_litigante_btn.click()
+
+        # tipo_persona_input = WebDriverWait(self.browser.find_element(By.XPATH, ""))
 
         # Proof of work
         self.browser.save_screenshot("proof_of_work.png")
