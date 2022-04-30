@@ -1,3 +1,5 @@
+import time
+
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.firefox.service import Service
@@ -52,17 +54,19 @@ class SeleniumBot():
         login = WebDriverWait(self.browser, timeout=10).until(
             EC.element_to_be_clickable(self.browser.find_element(By.ID, "login-submit")))
         login.click()
+
+        print("Logged In...")
     
     def ingreso_dda_escrito(self):
         # Get current tab
         first_tab_handle = self.browser.current_window_handle 
         print(f"first table handle: {str(first_tab_handle)}")
 
-        # Ingreso dda/escrito new page
+        # Ingreso dda/escrito
         goto_search = WebDriverWait(self.browser, timeout=10).until(
             EC.element_to_be_clickable(self.browser.find_element(By.XPATH, "//a[@onclick='ingresoDemanYEscritos();']"))
         )
-        goto_search.click()
+        goto_search.click()  # Opens new tab
 
         self.browser.implicitly_wait(3)
 
@@ -72,10 +76,37 @@ class SeleniumBot():
         print(f"second table handle: {str(second_tab_handle)}")
 
         # Ingreso recurso menu btn 
-        ingreso_form_display_btn = self.browser.find_element(By.XPATH, "//div[@class='list-group-item list-group-item-action p-2 pg_menu_lt'][3]")
+        ingreso_form_display_btn = WebDriverWait(self.browser, timeout=25).until(
+            EC.element_to_be_clickable(self.browser.find_element(By.XPATH, "//div[@class='list-group-item list-group-item-action p-2 pg_menu_lt'][3]"))
+        )
         self.browser.execute_script("arguments[0].scrollIntoView();", ingreso_form_display_btn)
         self.browser.execute_script("arguments[0].click();", ingreso_form_display_btn)
 
-        self.browser.implicitly_wait(3)
+        # --- working, iterate just once till here
+        print("Start filling form for upload...")
+        
+        # self.browser.implicitly_wait(10)
+        time.sleep(5)
 
-        # Competencia dropdown
+        # Opened ingreso form
+        # competencia_dropdown = self.browser.find_element(By.XPATH, "//select[@class='form-control']")
+        competencia_dropdown = WebDriverWait(self.browser, timeout=25).until(
+            EC.element_to_be_clickable(self.browser.find_element(By.XPATH, "//select[@class='form-control']"))
+        )
+        competencia_dropdown.click()
+        # self.browser.execute_script("arguments[0].scrollIntoView();", competencia_dropdown)
+        # self.browser.execute_script("arguments[0].click();", competencia_dropdown)
+
+        competencia = Select(competencia_dropdown)
+        competencia.select_by_visible_text("Cortes de Apelaciones")
+        # competencia.select_by_value("Cortes de Apelaciones")
+
+        
+
+        # Proof of work
+        self.browser.save_screenshot("proof_of_work.png")
+
+        # fijar_datos_btn = WebDriverWait(self.browser, timeout=10).until(
+        #     EC.element_to_be_clickable(self.browser.find_element(By.XPATH, "//input[@id='id_check_fijar_mod_tribunal']"))
+        # )
+        # fijar_datos_btn.click()
