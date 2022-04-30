@@ -1,9 +1,16 @@
-from pprint import pprint
+import os
+import convertapi
 import pandas as pd
+
 from docxtpl import DocxTemplate
+from pprint import pprint
 
 def main():
-    # Open csv and read all clients data
+    # --- scripting env
+    secret_key = str(os.environ["convert_api_secret_key"])
+    convertapi.api_secret = secret_key 
+
+    # --- Open csv and read all clients data
     df = pd.read_csv("BD - Protecciones.csv")[[
         "INGRESAR",
         "TIPO",
@@ -23,13 +30,14 @@ def main():
         # "TERMINADA",
     ]]
 
-    # Filter df by INGRESAR column value
+    # --- Filter df by column value == True
     df_filtered = df[df["INGRESAR"]]
 
-    # df to list of dicts, each element is list needs to be a different docs
+    # --- df to list of dicts, each dict element in list is a different client's data
+    # --- needs to be a different docs for each client
     clients_data_df = df_filtered.to_dict(orient="records")
 
-    # Open docx document
+    # --- Open docx document
     doc_template = DocxTemplate("template.docx")
 
     # --- Each dictionary element within this list represents a client ---
@@ -54,13 +62,19 @@ def main():
             'MES_OBJECIÓN': client_data["MES OBJECIÓN"]
         }
 
-        pprint(context)
+        pprint(f"Creating {file_name}")
+
+        # --- Create & Save clients' docx 
         doc_template.render(context)
 
-        # Save client own doc
-        doc_template.save(f"docx_autoescrito/C.A. DE {client_data['CORTE']} - {client_data['RECURRENTE']} con {client_data['ISAPRE']}.docx")
-    
+        file_name = f"C.A. DE {client_data['CORTE']} - {client_data['RECURRENTE']} con {client_data['ISAPRE']}"
+        docx_file_path = f"docx_autoescrito/{file_name}.docx"
+        doc_template.save(docx_file_path)
 
+        # --- Save clients' pdf
+        pdf = convertapi.convert('pdf', {'File': docx_file_path})
+        pdf_file_path = f"pdf_autoescrito/{file_name}.pdf"
+        pdf.file.save(pdf_file_path)
         
 
 if __name__ == "__main__":
