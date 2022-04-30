@@ -6,10 +6,6 @@ from docxtpl import DocxTemplate
 from pprint import pprint
 
 def main():
-    # --- scripting env
-    secret_key = str(os.environ["convert_api_secret_key"])
-    convertapi.api_secret = secret_key 
-
     # --- Open csv and read all clients data
     df = pd.read_csv("BD - Protecciones.csv")[[
         "INGRESAR",
@@ -37,9 +33,6 @@ def main():
     # --- needs to be a different docs for each client
     clients_data_df = df_filtered.to_dict(orient="records")
 
-    # --- Open docx document
-    doc_template = DocxTemplate("template.docx")
-
     # --- Each dictionary element within this list represents a client ---
     for client_data in clients_data_df:
         # --- Each key of the client dictionary represents the jinja syntax used in the
@@ -64,14 +57,22 @@ def main():
 
         pprint(f"Creating {file_name}")
 
-        # --- Create & Save clients' docx 
+        # --- Open template docx file
+        doc_template = DocxTemplate("template.docx")
+
+        # --- Create new client's docx by parsing template 
         doc_template.render(context)
 
+        # --- Save client's files (docx & pdf)
         file_name = f"C.A. DE {client_data['CORTE']} - {client_data['RECURRENTE']} con {client_data['ISAPRE']}"
+
         docx_file_path = f"docx_autoescrito/{file_name}.docx"
         doc_template.save(docx_file_path)
 
-        # --- Save clients' pdf
+        # --- Converts docx into pdf API. Note: secrey key in scripting env
+        secret_key = str(os.environ["convert_api_secret_key"])
+        convertapi.api_secret = secret_key 
+
         pdf = convertapi.convert('pdf', {'File': docx_file_path})
         pdf_file_path = f"pdf_autoescrito/{file_name}.pdf"
         pdf.file.save(pdf_file_path)
