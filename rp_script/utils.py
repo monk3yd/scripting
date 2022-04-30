@@ -89,19 +89,28 @@ class SeleniumBot():
         time.sleep(5)
 
         # Opened ingreso form
-        # competencia_dropdown = self.browser.find_element(By.XPATH, "//select[@class='form-control']")
+        # --- Competencia
         competencia_dropdown = WebDriverWait(self.browser, timeout=25).until(
             EC.element_to_be_clickable(self.browser.find_element(By.XPATH, "//select[@class='form-control']"))
         )
         competencia_dropdown.click()
-        # self.browser.execute_script("arguments[0].scrollIntoView();", competencia_dropdown)
-        # self.browser.execute_script("arguments[0].click();", competencia_dropdown)
-
         competencia = Select(competencia_dropdown)
         competencia.select_by_visible_text("Cortes de Apelaciones")
-        # competencia.select_by_value("Cortes de Apelaciones")
 
-        
+        # --- Corte
+        corte_dropdown = WebDriverWait(self.browser, timeout=25).until(
+            EC.element_to_be_clickable(self.browser.find_element(By.XPATH, "//div[@id='s2id_autogen21']/a[1]"))
+        )
+        corte_dropdown.click()
+        # corte = Select(corte_dropdown)
+        # corte.select_by_visible_text("C.A. de La Serena")
+        corte = self.browser.find_element(By.XPATH, "//div[@id='select2-result-label-27']")
+        corte.click()
+
+        fijar = self.browser.find_element(By.XPATH, "//input[@id='id_check_fijar_mod_tribunal']")
+        fijar.click()
+
+
 
         # Proof of work
         self.browser.save_screenshot("proof_of_work.png")
