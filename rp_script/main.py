@@ -91,7 +91,8 @@ def main():
     # Robot object
     robot = SeleniumBot(url=URL)
     robot.login(rut=RUT, passwd=PASSWD)
-    robot.ingreso_dda_escrito()
+    robot.goto_ingreso_dda_escrito()
+    robot.fill_form()
 
 if __name__ == "__main__":
     main()
