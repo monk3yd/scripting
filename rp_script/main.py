@@ -7,6 +7,7 @@ from pprint import pprint
 
 from utils import SeleniumBot
 
+
 def main():
     # TODO GET DATA FUNC
     # --- Open csv and read all clients data
@@ -29,7 +30,7 @@ def main():
         # "TERMINADA",
     ]]
 
-    # --- Filter df by column value == True 
+    # --- Filter df by column value == True
     df_filtered = df[df["INGRESAR"]]
 
     # --- df to list of dicts, each dict element in list is a different client's data
@@ -52,7 +53,7 @@ def main():
     #         'REP_ISAPRE': client_data['REP ISAPRE'],
     #         'DOMICILIO_ISAPRE': client_data['DOMICILIO ISAPRE'],
     #         'PLAN': client_data['PLAN'],
-    #         'ALZA': client_data['ALZA'], 
+    #         'ALZA': client_data['ALZA'],
     #         'FECHA_CARTA': client_data['FECHA CARTA'],
     #         'PB': client_data['PB'],
     #         'PBR': client_data['PBR'],
@@ -64,7 +65,7 @@ def main():
     #     # --- Open template docx file
     #     doc_template = DocxTemplate("template.docx")
 
-    #     # --- Create new client's docx by parsing template 
+    #     # --- Create new client's docx by parsing template
     #     doc_template.render(context)
 
     #     # --- Save client's files (docx & pdf)
@@ -75,12 +76,11 @@ def main():
 
     #     # --- Converts docx into pdf API. Note: secrey key in scripting env
     #     secret_key = str(os.environ["convert_api_secret_key"])
-    #     convertapi.api_secret = secret_key 
+    #     convertapi.api_secret = secret_key
 
     #     pdf = convertapi.convert('pdf', {'File': docx_file_path})
     #     pdf_file_path = f"pdf_autoescrito/{file_name}.pdf"
     #     pdf.file.save(pdf_file_path)
- 
 
     URL = "https://oficinajudicialvirtual.pjud.cl/home/index.php"
     RUT = os.environ["rut"]
@@ -92,7 +92,8 @@ def main():
     robot = SeleniumBot(url=URL)
     robot.login(rut=RUT, passwd=PASSWD)
     robot.goto_ingreso_dda_escrito()
-    robot.fill_form()
+    robot.fill_form()  # Pass in data
+
 
 if __name__ == "__main__":
     main()
