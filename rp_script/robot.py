@@ -95,8 +95,14 @@ class SeleniumBot():
         time.sleep(random.uniform(4, 5))  # randomize wait
 
     def fill_forms(self, clients_data_df):
+        reset_btn = self.browser.find_element(
+            By.XPATH, "//div[@data-bind='click: function(){$parent.btnMenuHide($data)}, css{menu_lt_active: id == $parent.menuSelected()}'][3]"
+        )
         for client_data in clients_data_df:
-            pprint("Filling form...")
+            self.browser.execute_script("arguments[0].click();", reset_btn)
+            time.sleep(random.uniform(4, 5))  # randomize wait
+
+            pprint(f"Filling form from...{client_data['RECURRENTE']}")
 
             # Opened ingreso form
             # --- Competencia
@@ -257,6 +263,7 @@ class SeleniumBot():
             # )
             # upload_recurso.send_keys("pdf_autoescrito/C.A. DE LA SERENA - MANUEL ABARCA MEZA con BANMÉDICA.pdf" + Keys.RETURN)
 
+            pprint("End filling form...")
             # Cerrar & continuar (iterate thorugh df)
             cerrar_y_continuar_btn = self.browser.find_element(
                 By.XPATH, "//button[@data-bind='click:cerrarAdjuntar']"
