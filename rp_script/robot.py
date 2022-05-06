@@ -20,6 +20,8 @@ from pprint import pprint
 
 class SeleniumBot():
     def __init__(self, url: str = None):
+        pprint("Connecting to robot...")
+
         # --- Setup & initialize browser
         options = Options()
         options.add_argument("start_maximized")
@@ -38,12 +40,10 @@ class SeleniumBot():
         dropdown_btn = WebDriverWait(self.browser, timeout=10).until(
             EC.element_to_be_clickable(self.browser.find_element(By.CLASS_NAME, 'dropbtn'))
         ).click()
-        # dropdown_btn.click()
 
         goto_login = WebDriverWait(self.browser, timeout=10).until(
             EC.element_to_be_clickable(self.browser.find_element(By.XPATH, "//div[@id='myDropdown']/a"))
         ).click()
-        # goto_login.click()
 
         self.browser.implicitly_wait(3)
 
@@ -63,7 +63,9 @@ class SeleniumBot():
         pprint("Logged In...")
 
     def goto_ingreso_dda_escrito(self):
-        # Get current tab
+        pprint("Going to ingreso demandas & escritos...")
+
+        # Get current tab id
         first_tab_handle = self.browser.current_window_handle
         # pprint(f"first table handle: {str(first_tab_handle)}")
 
@@ -222,7 +224,9 @@ class SeleniumBot():
 
         precio_base_checkbox = self.browser.find_element(
             By.XPATH, "//input[@data-bind='checked: checkPrecioBase']"
-        ).click()
+        )
+        self.browser.execute_script("arguments[0].scrollIntoView();", precio_base_checkbox)
+        self.browser.execute_script("arguments[0].click();", precio_base_checkbox)
 
         time.sleep(random.uniform(4, 5))  # randomize wait
 
