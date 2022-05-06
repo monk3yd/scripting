@@ -12,6 +12,7 @@ def parse_and_save(clients_data_df):
         # --- word template.docx file as a placeholder.
         # --- Each value of the client dictionary represents the value that is going to
         # --- substitute the placeholder.
+        pprint("Generate context...")
         context = {
             'CORTE': client_data['CORTE'],
             'PREFIX': client_data['PREFIX'],
@@ -31,9 +32,11 @@ def parse_and_save(clients_data_df):
         }
 
         # --- Open template docx file
+        pprint("Open docx template...")
         doc_template = DocxTemplate("template.docx")
 
         # --- Create new client's docx by parsing template
+        pprint("Render template with context variables...")
         doc_template.render(context)
 
         # --- Save client's files (docx & pdf)
