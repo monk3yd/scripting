@@ -12,7 +12,7 @@ def parse_and_save(clients_data_df):
         # --- word template.docx file as a placeholder.
         # --- Each value of the client dictionary represents the value that is going to
         # --- substitute the placeholder.
-        pprint("Generate context...")
+        pprint(f"Generate context for...{client_data['RECURRENTE']}")
         context = {
             'CORTE': client_data['CORTE'],
             'PREFIX': client_data['PREFIX'],
@@ -40,7 +40,7 @@ def parse_and_save(clients_data_df):
         doc_template.render(context)
 
         # --- Save client's files (docx & pdf)
-        file_name = f"ID: {client_data['ID']} - C.A. DE {client_data['CORTE']} - {client_data['RECURRENTE']} con {client_data['ISAPRE']}"
+        file_name = f"ID {client_data['ID']} - C.A. DE {client_data['CORTE']} - {client_data['RECURRENTE']} con {client_data['ISAPRE']}"
 
         pprint(f"Creating {file_name} in docx & pdf...")
 
@@ -54,4 +54,3 @@ def parse_and_save(clients_data_df):
         pdf = convertapi.convert('pdf', {'File': docx_file_path})
         pdf_file_path = f"pdf_autoescrito/{file_name}.pdf"
         pdf.file.save(pdf_file_path)
-        exit()

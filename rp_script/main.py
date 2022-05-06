@@ -39,7 +39,7 @@ def main():
     clients_data_df = df_filtered.to_dict(orient="records")
 
     # --- Parse template & Save docx & pdf files ---
-    # parse_and_save(clients_data_df)
+    parse_and_save(clients_data_df)
 
     # pprint('''
     #     All files generated...
@@ -47,14 +47,14 @@ def main():
     # ''')
 
     # --- Robot ---
-    URL = "https://oficinajudicialvirtual.pjud.cl/home/index.php"
-    RUT = os.environ["rut"]
-    PASSWD = os.environ["passwd"]
+    # URL = "https://oficinajudicialvirtual.pjud.cl/home/index.php"
+    # RUT = os.environ["rut"]
+    # PASSWD = os.environ["passwd"]
 
-    robot = SeleniumBot(url=URL)
-    robot.login(rut=RUT, passwd=PASSWD)
-    robot.goto_ingreso_dda_escrito()
-    robot.fill_forms(clients_data_df)  # Pass in data
+    # robot = SeleniumBot(url=URL)
+    # robot.login(rut=RUT, passwd=PASSWD)
+    # robot.goto_ingreso_dda_escrito()
+    # robot.fill_forms(clients_data_df)
 
 
 if __name__ == "__main__":
