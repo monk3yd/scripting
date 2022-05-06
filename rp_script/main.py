@@ -51,12 +51,10 @@ def main():
     RUT = os.environ["rut"]
     PASSWD = os.environ["passwd"]
 
-    pprint("Connecting to robot...")
-
     robot = SeleniumBot(url=URL)
     robot.login(rut=RUT, passwd=PASSWD)
     robot.goto_ingreso_dda_escrito()
-    robot.fill_forms()  # Pass in data
+    robot.fill_forms(clients_data_df)  # Pass in data
 
 
 if __name__ == "__main__":
