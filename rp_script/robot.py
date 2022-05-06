@@ -1,5 +1,6 @@
 import os
 import time
+import random
 
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
@@ -58,7 +59,6 @@ class SeleniumBot():
         login = WebDriverWait(self.browser, timeout=10).until(
             EC.element_to_be_clickable(self.browser.find_element(By.ID, "login-submit"))
         ).click()
-        # login.click()
 
         pprint("Logged In...")
 
@@ -72,7 +72,6 @@ class SeleniumBot():
             EC.element_to_be_clickable(self.browser.find_element(
                 By.XPATH, "//a[@onclick='ingresoDemanYEscritos();']"))
         ).click()
-        # goto_search.click()  # Opens new tab
 
         self.browser.implicitly_wait(3)
 
@@ -91,7 +90,7 @@ class SeleniumBot():
         self.browser.execute_script(
             "arguments[0].click();", ingreso_form_display_btn)
 
-        time.sleep(5)  # TODO - randomize wait
+        time.sleep(random.uniform(4, 5))  # randomize wait
 
     def fill_forms(self):
         pprint("Filling form...")
@@ -149,7 +148,7 @@ class SeleniumBot():
             EC.element_to_be_clickable(self.browser.find_element(
                 By.XPATH, "//div[@id='s2id_autogen59']/a[1]"))
         ).click()
-        
+
         ab_recurrente = self.browser.find_element(
             By.XPATH, "//div[@id='select2-result-label-65']"
         ).click()
@@ -161,7 +160,7 @@ class SeleniumBot():
         # --- Rut abogad@ recurente
         rut_input.send_keys(str(os.environ['rut']) + Keys.RETURN)
 
-        time.sleep(5)  # TODO - randomize wait
+        time.sleep(random.uniform(4, 5))  # randomize wait
 
         agregar_litigante_btn = self.browser.find_element(
             By.XPATH, "//button[@data-bind='click: validarIngresoLitigante']"
@@ -184,7 +183,7 @@ class SeleniumBot():
         # --- Rut recurrente
         rut_input.send_keys("18.354.881-6" + Keys.RETURN)  # TODO fix hardcode
 
-        time.sleep(5)  # TODO - randomize wait
+        time.sleep(random.uniform(4, 5))  # randomize wait
 
         agregar_litigante_btn = self.browser.find_element(
             By.XPATH, "//button[@data-bind='click: validarIngresoLitigante']")
@@ -210,7 +209,7 @@ class SeleniumBot():
         # --- Rut recurrido (Isapre)
         rut_input.send_keys("76.296.619-0" + Keys.RETURN)  # TODO fix hardcode
 
-        time.sleep(5)  # TODO - randomize wait
+        time.sleep(random.uniform(4, 5))  # randomize wait
 
         self.browser.execute_script(
             "arguments[0].scrollIntoView();", agregar_litigante_btn)
@@ -225,7 +224,7 @@ class SeleniumBot():
             By.XPATH, "//input[@data-bind='checked: checkPrecioBase']"
         ).click()
 
-        time.sleep(5)  # TODO - randomize wait
+        time.sleep(random.uniform(4, 5))  # randomize wait
 
         # --- Precio Base
         pb_input = self.browser.find_element(By.ID, "desdePrecioBase")
@@ -239,13 +238,13 @@ class SeleniumBot():
             By.XPATH, "//button[@data-bind='click: agregarInformacionAdicional, enable: validDesdeHasta']")
         agregar_info_adicional_btn.click()
 
-        time.sleep(3)  # TODO - randomize wait
+        time.sleep(random.uniform(3, 4))  # randomize wait
 
         ingresar_causa_btn = self.browser.find_element(
             By.XPATH, "//button[@data-bind='click: ingresarCausa, enable: validCausaLitiganteComp() ']"
         ).click()
 
-        time.sleep(3)  # TODO - randomize wait
+        time.sleep(random.uniform(3, 4))  # randomize wait
 
         # TODO - Upload adjuntos
         # upload_recurso = self.browser.find_element(
