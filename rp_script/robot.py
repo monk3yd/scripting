@@ -94,172 +94,173 @@ class SeleniumBot():
 
         time.sleep(random.uniform(4, 5))  # randomize wait
 
-    def fill_forms(self):
-        pprint("Filling form...")
+    def fill_forms(self, clients_data_df):
+        for client_data in clients_data_df:
+            pprint("Filling form...")
 
-        # Opened ingreso form
-        # --- Competencia
-        competencia_dropdown = WebDriverWait(self.browser, timeout=25).until(
-            EC.element_to_be_clickable(self.browser.find_element(
-                By.XPATH, "//select[@class='form-control']"))
-        )
-        competencia_dropdown.click()
-        competencia = Select(competencia_dropdown)
-        competencia.select_by_visible_text("Cortes de Apelaciones")
+            # Opened ingreso form
+            # --- Competencia
+            competencia_dropdown = WebDriverWait(self.browser, timeout=25).until(
+                EC.element_to_be_clickable(self.browser.find_element(
+                    By.XPATH, "//select[@class='form-control']"))
+            )
+            competencia_dropdown.click()
+            competencia = Select(competencia_dropdown)
+            competencia.select_by_visible_text("Cortes de Apelaciones")
 
-        # --- Corte
-        corte_dropdown = WebDriverWait(self.browser, timeout=25).until(
-            EC.element_to_be_clickable(self.browser.find_element(
-                By.XPATH, "//div[@id='s2id_autogen21']/a[1]"))
-        ).click()
+            # --- Corte
+            corte_dropdown = WebDriverWait(self.browser, timeout=25).until(
+                EC.element_to_be_clickable(self.browser.find_element(
+                    By.XPATH, "//div[@id='s2id_autogen21']/a[1]"))
+            ).click()
 
-        corte = self.browser.find_element(
-            By.XPATH, "//div[@id='select2-result-label-27']"
-        ).click()
+            corte = self.browser.find_element(
+                By.XPATH, "//div[@id='select2-result-label-27']"
+            ).click()
 
-        fijar_competencia_btn = self.browser.find_element(
-            By.XPATH, "//input[@id='id_check_fijar_mod_tribunal']"
-        ).click()
+            fijar_competencia_btn = self.browser.find_element(
+                By.XPATH, "//input[@id='id_check_fijar_mod_tribunal']"
+            ).click()
 
-        libro_dropdown = WebDriverWait(self.browser, timeout=10).until(
-            EC.element_to_be_clickable(self.browser.find_element(
-                By.XPATH, "//div[@id='s2id_autogen40']/a[1]"))
-        ).click()
+            libro_dropdown = WebDriverWait(self.browser, timeout=10).until(
+                EC.element_to_be_clickable(self.browser.find_element(
+                    By.XPATH, "//div[@id='s2id_autogen40']/a[1]"))
+            ).click()
 
-        libro = self.browser.find_element(
-            By.XPATH, "//div[@id='select2-result-label-50']"
-        )
-        libro.click()
+            libro = self.browser.find_element(
+                By.XPATH, "//div[@id='select2-result-label-50']"
+            )
+            libro.click()
 
-        tipo_recurso_dropdown = WebDriverWait(self.browser, timeout=10).until(
-            EC.element_to_be_clickable(self.browser.find_element(
-                By.XPATH, "//div[@id='s2id_autogen42']/a[1]"))
-        ).click()
+            tipo_recurso_dropdown = WebDriverWait(self.browser, timeout=10).until(
+                EC.element_to_be_clickable(self.browser.find_element(
+                    By.XPATH, "//div[@id='s2id_autogen42']/a[1]"))
+            ).click()
 
-        tipo_recurso = self.browser.find_element(
-            By.XPATH, "//div[@id='select2-result-label-57']"
-        ).click()
+            tipo_recurso = self.browser.find_element(
+                By.XPATH, "//div[@id='select2-result-label-57']"
+            ).click()
 
-        fijar_materia_btn = self.browser.find_element(
-            By.XPATH, "//input[@id='id_check_fijar_mod_materia']"
-        ).click()
+            fijar_materia_btn = self.browser.find_element(
+                By.XPATH, "//input[@id='id_check_fijar_mod_materia']"
+            ).click()
 
-        # TODO - LOOP
-        # --- Litigante - Ab Recurrente
-        tipo_sujeto_dropdown = WebDriverWait(self.browser, timeout=10).until(
-            EC.element_to_be_clickable(self.browser.find_element(
-                By.XPATH, "//div[@id='s2id_autogen59']/a[1]"))
-        ).click()
+            # TODO - Possible LOOP, difficult to manage
+            # --- Litigante - Ab Recurrente
+            tipo_sujeto_dropdown = WebDriverWait(self.browser, timeout=10).until(
+                EC.element_to_be_clickable(self.browser.find_element(
+                    By.XPATH, "//div[@id='s2id_autogen59']/a[1]"))
+            ).click()
 
-        ab_recurrente = self.browser.find_element(
-            By.XPATH, "//div[@id='select2-result-label-65']"
-        ).click()
+            ab_recurrente = self.browser.find_element(
+                By.XPATH, "//div[@id='select2-result-label-65']"
+            ).click()
 
-        rut_input = WebDriverWait(self.browser, timeout=10).until(
-            EC.element_to_be_clickable(self.browser.find_element(
-                By.XPATH, "//input[@data-bind='value: rutSel, disable:bloqueoRutComp']"))
-        )
-        # --- Rut abogad@ recurente
-        rut_input.send_keys(str(os.environ['rut']) + Keys.RETURN)
+            rut_input = WebDriverWait(self.browser, timeout=10).until(
+                EC.element_to_be_clickable(self.browser.find_element(
+                    By.XPATH, "//input[@data-bind='value: rutSel, disable:bloqueoRutComp']"))
+            )
+            # --- Rut abogad@ recurente
+            rut_input.send_keys(str(os.environ['rut']) + Keys.RETURN)
 
-        time.sleep(random.uniform(4, 5))  # randomize wait
+            time.sleep(random.uniform(4, 5))  # randomize wait
 
-        agregar_litigante_btn = self.browser.find_element(
-            By.XPATH, "//button[@data-bind='click: validarIngresoLitigante']"
-        ).click()
+            agregar_litigante_btn = self.browser.find_element(
+                By.XPATH, "//button[@data-bind='click: validarIngresoLitigante']"
+            ).click()
 
-        # --- Litigante - Recurrente
-        tipo_sujeto_dropdown = WebDriverWait(self.browser, timeout=10).until(
-            EC.element_to_be_clickable(self.browser.find_element(
-                By.XPATH, "//div[@id='s2id_autogen59']/a[1]"))
-        ).click()
+            # --- Litigante - Recurrente
+            tipo_sujeto_dropdown = WebDriverWait(self.browser, timeout=10).until(
+                EC.element_to_be_clickable(self.browser.find_element(
+                    By.XPATH, "//div[@id='s2id_autogen59']/a[1]"))
+            ).click()
 
-        recurrente = self.browser.find_element(
-            By.XPATH, "//div[@id='select2-result-label-71']"
-        ).click()
+            recurrente = self.browser.find_element(
+                By.XPATH, "//div[@id='select2-result-label-71']"
+            ).click()
 
-        rut_input = WebDriverWait(self.browser, timeout=10).until(
-            EC.element_to_be_clickable(self.browser.find_element(
-                By.XPATH, "//input[@data-bind='value: rutSel, disable:bloqueoRutComp']"))
-        )
-        # --- Rut recurrente
-        rut_input.send_keys("18.354.881-6" + Keys.RETURN)  # TODO fix hardcode
+            rut_input = WebDriverWait(self.browser, timeout=10).until(
+                EC.element_to_be_clickable(self.browser.find_element(
+                    By.XPATH, "//input[@data-bind='value: rutSel, disable:bloqueoRutComp']"))
+            )
+            # --- Rut recurrente
+            rut_input.send_keys(client_data["CI"] + Keys.RETURN)
 
-        time.sleep(random.uniform(4, 5))  # randomize wait
+            time.sleep(random.uniform(4, 5))  # randomize wait
 
-        agregar_litigante_btn = self.browser.find_element(
-            By.XPATH, "//button[@data-bind='click: validarIngresoLitigante']")
-        self.browser.execute_script(
-            "arguments[0].scrollIntoView();", agregar_litigante_btn)
-        self.browser.execute_script(
-            "arguments[0].click();", agregar_litigante_btn)
+            agregar_litigante_btn = self.browser.find_element(
+                By.XPATH, "//button[@data-bind='click: validarIngresoLitigante']")
+            self.browser.execute_script(
+                "arguments[0].scrollIntoView();", agregar_litigante_btn)
+            self.browser.execute_script(
+                "arguments[0].click();", agregar_litigante_btn)
 
-        # --- Litigante - Recurrido
-        tipo_sujeto_dropdown = WebDriverWait(self.browser, timeout=10).until(
-            EC.element_to_be_clickable(self.browser.find_element(
-                By.XPATH, "//div[@id='s2id_autogen59']/a[1]"))
-        ).click()
+            # --- Litigante - Recurrido
+            tipo_sujeto_dropdown = WebDriverWait(self.browser, timeout=10).until(
+                EC.element_to_be_clickable(self.browser.find_element(
+                    By.XPATH, "//div[@id='s2id_autogen59']/a[1]"))
+            ).click()
 
-        recurrida = self.browser.find_element(
-            By.XPATH, "//div[@id='select2-result-label-76']"
-        ).click()
+            recurrida = self.browser.find_element(
+                By.XPATH, "//div[@id='select2-result-label-76']"
+            ).click()
 
-        rut_input = WebDriverWait(self.browser, timeout=10).until(
-            EC.element_to_be_clickable(self.browser.find_element(
-                By.XPATH, "//input[@data-bind='value: rutSel, disable:bloqueoRutComp']"))
-        )
-        # --- Rut recurrido (Isapre)
-        rut_input.send_keys("76.296.619-0" + Keys.RETURN)  # TODO fix hardcode
+            rut_input = WebDriverWait(self.browser, timeout=10).until(
+                EC.element_to_be_clickable(self.browser.find_element(
+                    By.XPATH, "//input[@data-bind='value: rutSel, disable:bloqueoRutComp']"))
+            )
+            # --- Rut recurrido (Isapre)
+            rut_input.send_keys(client_data["RUT ISAPRE"] + Keys.RETURN)
 
-        time.sleep(random.uniform(4, 5))  # randomize wait
+            time.sleep(random.uniform(4, 5))  # randomize wait
 
-        self.browser.execute_script(
-            "arguments[0].scrollIntoView();", agregar_litigante_btn)
-        self.browser.execute_script(
-            "arguments[0].click();", agregar_litigante_btn)
+            self.browser.execute_script(
+                "arguments[0].scrollIntoView();", agregar_litigante_btn)
+            self.browser.execute_script(
+                "arguments[0].click();", agregar_litigante_btn)
 
-        informacion_adicional_btn = self.browser.find_element(
-            By.XPATH, "//button[@data-bind='click: showModalInformacionAdicional , enable: bloqueoInfoAdicional()']"
-        ).click()
+            informacion_adicional_btn = self.browser.find_element(
+                By.XPATH, "//button[@data-bind='click: showModalInformacionAdicional , enable: bloqueoInfoAdicional()']"
+            ).click()
 
-        precio_base_checkbox = self.browser.find_element(
-            By.XPATH, "//input[@data-bind='checked: checkPrecioBase']"
-        )
-        self.browser.execute_script("arguments[0].scrollIntoView();", precio_base_checkbox)
-        self.browser.execute_script("arguments[0].click();", precio_base_checkbox)
+            precio_base_checkbox = self.browser.find_element(
+                By.XPATH, "//input[@data-bind='checked: checkPrecioBase']"
+            )
+            self.browser.execute_script("arguments[0].scrollIntoView();", precio_base_checkbox)
+            self.browser.execute_script("arguments[0].click();", precio_base_checkbox)
 
-        time.sleep(random.uniform(4, 5))  # randomize wait
+            time.sleep(random.uniform(4, 5))  # randomize wait
 
-        # --- Precio Base
-        pb_input = self.browser.find_element(By.ID, "desdePrecioBase")
-        pb_input.send_keys("2.87")  # TODO fix hardcode
+            # --- Precio Base
+            pb_input = self.browser.find_element(By.ID, "desdePrecioBase")
+            pb_input.send_keys(client_data["PB"])
 
-        # --- Precio Base Reajustado
-        pbr_input = self.browser.find_element(By.ID, "hastaPrecioBase")
-        pbr_input.send_keys("3.9" + Keys.RETURN)
+            # --- Precio Base Reajustado
+            pbr_input = self.browser.find_element(By.ID, "hastaPrecioBase")
+            pbr_input.send_keys(client_data["PBR"] + Keys.RETURN)
 
-        agregar_info_adicional_btn = self.browser.find_element(
-            By.XPATH, "//button[@data-bind='click: agregarInformacionAdicional, enable: validDesdeHasta']")
-        agregar_info_adicional_btn.click()
+            agregar_info_adicional_btn = self.browser.find_element(
+                By.XPATH, "//button[@data-bind='click: agregarInformacionAdicional, enable: validDesdeHasta']")
+            agregar_info_adicional_btn.click()
 
-        time.sleep(random.uniform(3, 4))  # randomize wait
+            time.sleep(random.uniform(3, 4))  # randomize wait
 
-        ingresar_causa_btn = self.browser.find_element(
-            By.XPATH, "//button[@data-bind='click: ingresarCausa, enable: validCausaLitiganteComp() ']"
-        ).click()
+            ingresar_causa_btn = self.browser.find_element(
+                By.XPATH, "//button[@data-bind='click: ingresarCausa, enable: validCausaLitiganteComp() ']"
+            ).click()
 
-        time.sleep(random.uniform(3, 4))  # randomize wait
+            time.sleep(random.uniform(3, 4))  # randomize wait
 
-        # TODO - Upload adjuntos
-        # upload_recurso = self.browser.find_element(
-        #     By.XPATH, "//button[@data-bind='click: uploadDocumentoPrincipal, disable: flgShowMsnBrowserNoValid']"
-        # )
-        # upload_recurso.send_keys("pdf_autoescrito/C.A. DE LA SERENA - MANUEL ABARCA MEZA con BANMÉDICA.pdf" + Keys.RETURN)
+            # TODO - Upload adjuntos
+            # upload_recurso = self.browser.find_element(
+            #     By.XPATH, "//button[@data-bind='click: uploadDocumentoPrincipal, disable: flgShowMsnBrowserNoValid']"
+            # )
+            # upload_recurso.send_keys("pdf_autoescrito/C.A. DE LA SERENA - MANUEL ABARCA MEZA con BANMÉDICA.pdf" + Keys.RETURN)
 
-        # Cerrar & continuar (iterate thorugh df)
-        cerrar_y_continuar_btn = self.browser.find_element(
-            By.XPATH, "//button[@data-bind='click:cerrarAdjuntar']"
-        ).click()
+            # Cerrar & continuar (iterate thorugh df)
+            cerrar_y_continuar_btn = self.browser.find_element(
+                By.XPATH, "//button[@data-bind='click:cerrarAdjuntar']"
+            ).click()
 
-        # Proof of work
-        self.browser.save_screenshot("proof_of_work.png")
+            # # Proof of work
+            # self.browser.save_screenshot("proof_of_work.png")
