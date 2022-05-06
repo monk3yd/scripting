@@ -5,9 +5,9 @@ from docxtpl import DocxTemplate
 from pprint import pprint
 
 
-def parse_and_save(clients_data_df):
+def parse_and_save(clients_data: list, template_path: str):
     # --- Each dictionary element within this list represents a client ---
-    for client_data in clients_data_df:
+    for client_data in clients_data:
         # --- Each key of the client dictionary represents the jinja syntax used in the
         # --- word template.docx file as a placeholder.
         # --- Each value of the client dictionary represents the value that is going to
@@ -33,7 +33,7 @@ def parse_and_save(clients_data_df):
 
         # --- Open template docx file
         pprint("Open docx template...")
-        doc_template = DocxTemplate("template.docx")
+        doc_template = DocxTemplate(template_path)
 
         # --- Create new client's docx by parsing template
         pprint("Render template with context variables...")
