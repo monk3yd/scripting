@@ -1,4 +1,3 @@
-import os
 import pandas as pd
 
 from pathlib import Path
@@ -6,7 +5,10 @@ from utils import parse_and_save
 
 
 def main():
-    # --- Manage Database ---  # TODO make func
+    # TODO - Connect to Google Drive
+    # Download Database csv
+
+    # --- Manage Database ---
     # --- Open csv and read all clients data
     df = pd.read_csv("BD - Protecciones.csv")[[
         "ID",

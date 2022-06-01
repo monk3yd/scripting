@@ -2,7 +2,6 @@ import os
 import convertapi
 
 from docxtpl import DocxTemplate
-from pprint import pprint
 
 
 def parse_and_save(clients_data: list, template_path: str):
@@ -12,7 +11,7 @@ def parse_and_save(clients_data: list, template_path: str):
         # --- word template.docx file as a placeholder.
         # --- Each value of the client dictionary represents the value that is going to
         # --- substitute the placeholder.
-        pprint(f"Generate context for...{client_data['RECURRENTE']}")
+        print(f"Generate context variables for...{client_data['RECURRENTE']}")
         context = {
             'CORTE': client_data['CORTE'],
             'PREFIX': client_data['PREFIX'],
@@ -30,28 +29,28 @@ def parse_and_save(clients_data: list, template_path: str):
             'PBR': client_data['PBR'],
             'MES_OBJECIÓN': client_data["MES OBJECIÓN"]
         }
-        # --- Converts docx into pdf API. Note: secrey key in scripting env
-        secret_key = str(os.environ["convert_api_secret_key"])
-        convertapi.api_secret = secret_key
+        # --- Converts docx into pdf API. Note: secrey key in conda scripting env
+        convertapi.api_secret = os.getenv("SECRET_KEY")
 
         # --- Open template docx file
-        pprint("Open docx template...")
+        print("Open docx template...")
         doc_template = DocxTemplate(template_path)
 
         # --- Create new client's docx by parsing template
-        pprint("Render template with context variables...")
+        print("Render template and replace with context variables...")
         doc_template.render(context)
 
         # --- Save client's files (docx & pdf)
         file_name = f"ID {client_data['ID']} - C.A. DE {client_data['CORTE']} - {client_data['RECURRENTE']} con {client_data['ISAPRE']}"
 
-        pprint(f"Creating {file_name} in docx & pdf...")
-
+        print(f"Saving {file_name} in docx...")
         docx_file_path = f"docx_autoescrito/{file_name}.docx"
         doc_template.save(docx_file_path)
 
+        print(f"Saving {file_name} in pdf...")
         pdf = convertapi.convert('pdf', {'File': docx_file_path})
         pdf_file_path = f"pdf_autoescrito/{file_name}.pdf"
         pdf.file.save(pdf_file_path)
 
     print("Success script run.")
+    return 0
