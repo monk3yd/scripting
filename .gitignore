@@ -134,4 +134,4 @@ dmypy.json
 *.docx
 *.pdf
 *.ipynb
-^test*
+test_api.py

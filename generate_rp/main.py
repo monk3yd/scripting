@@ -2,9 +2,7 @@ import os
 import pandas as pd
 
 from pathlib import Path
-# from robot import SeleniumBot
 from utils import parse_and_save
-from pprint import pprint
 
 
 def main():
@@ -41,22 +39,7 @@ def main():
 
     # --- File Generator ---
     # --- Parse template & Save docx & pdf files ---
-    parse_and_save(clients_data_list, Path("template.docx"))
-
-    # pprint('''
-    #     All files generated...
-    #     Starting upload...
-    # ''')
-
-    # --- Robot ---
-    # URL = "https://oficinajudicialvirtual.pjud.cl/home/index.php"
-    # RUT = os.environ["rut"]
-    # PASSWD = os.environ["passwd"]
-
-    # robot = SeleniumBot(url=URL)
-    # robot.login(rut=RUT, passwd=PASSWD)
-    # robot.goto_ingreso_dda_escrito()
-    # robot.fill_forms(clients_data_df)
+    parse_and_save(clients_data_list, Path("templates/template.docx"))
 
 
 if __name__ == "__main__":
