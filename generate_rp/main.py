@@ -1,10 +1,10 @@
 import os
 import pandas as pd
-import pathlib
 
-from pprint import pprint
-from robot import SeleniumBot
+from pathlib import Path
+# from robot import SeleniumBot
 from utils import parse_and_save
+from pprint import pprint
 
 
 def main():
@@ -38,7 +38,7 @@ def main():
     # --- df to list of dicts, each dict element in list is a different client's data
     # --- needs to be a different docs for each client
     clients_data_list = df_filtered.to_dict(orient="records")
-    
+
     # --- File Generator ---
     # --- Parse template & Save docx & pdf files ---
     parse_and_save(clients_data_list, Path("template.docx"))

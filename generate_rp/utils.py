@@ -30,6 +30,9 @@ def parse_and_save(clients_data: list, template_path: str):
             'PBR': client_data['PBR'],
             'MES_OBJECIÓN': client_data["MES OBJECIÓN"]
         }
+        # --- Converts docx into pdf API. Note: secrey key in scripting env
+        secret_key = str(os.environ["convert_api_secret_key"])
+        convertapi.api_secret = secret_key
 
         # --- Open template docx file
         pprint("Open docx template...")
@@ -47,10 +50,8 @@ def parse_and_save(clients_data: list, template_path: str):
         docx_file_path = f"docx_autoescrito/{file_name}.docx"
         doc_template.save(docx_file_path)
 
-        # --- Converts docx into pdf API. Note: secrey key in scripting env
-        secret_key = str(os.environ["convert_api_secret_key"])
-        convertapi.api_secret = secret_key
-
         pdf = convertapi.convert('pdf', {'File': docx_file_path})
         pdf_file_path = f"pdf_autoescrito/{file_name}.pdf"
         pdf.file.save(pdf_file_path)
+
+    print("Success script run.")
