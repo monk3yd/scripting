@@ -1,16 +1,25 @@
 import pandas as pd
 
 from pathlib import Path
-from utils import parse_and_save
+from utils import parse_and_save, gdrive_authenticate, download_gsheet
 
 
 def main():
-    # TODO - Connect to Google Drive
-    # Download Database csv
+    # --- Connect to Google Drive (Authentication) & Download gsheet ---
+    service = gdrive_authenticate()
+    gsheets = download_gsheet(service)  # csv or df?
+
+    gdf = pd.DataFrame(gsheets)
+
+    # First row as header
+    gdf = gdf.rename(columns=gdf.iloc[0]).loc[1:]
+
+    # Save backup csv
+    gdf.to_csv("Protecciones.csv", index=False)
 
     # --- Manage Database ---
     # --- Open csv and read all clients data
-    df = pd.read_csv("BD - Protecciones.csv")[[
+    df = pd.read_csv("Protecciones.csv")[[
         "ID",
         "INGRESAR",
         "TIPO",
