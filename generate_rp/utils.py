@@ -43,11 +43,11 @@ def parse_and_save(clients_data: list, template_path: str):
         # --- Save client's files (docx & pdf)
         file_name = f"ID {client_data['ID']} - C.A. DE {client_data['CORTE']} - {client_data['RECURRENTE']} con {client_data['ISAPRE']}"
 
-        print(f"Saving {file_name} in docx...")
+        print(f"Saving {file_name} in DOCX...")
         docx_file_path = f"docx_autoescrito/{file_name}.docx"
         doc_template.save(docx_file_path)
 
-        print(f"Saving {file_name} in pdf...")
+        print(f"Saving {file_name} in PDF...")
         pdf = convertapi.convert('pdf', {'File': docx_file_path})
         pdf_file_path = f"pdf_autoescrito/{file_name}.pdf"
         pdf.file.save(pdf_file_path)
