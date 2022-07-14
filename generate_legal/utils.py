@@ -17,7 +17,7 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
 
 # The ID and range of a sample spreadsheet.
 SPREADSHEET_ID = '1HiyHTIXVW98BDp7nlyMmzP37-okkuHCB--759NX4AEM'
-RANGE_NAME = 'Protecciones!A1:AJ'
+RANGE_NAME = 'Protecciones!A1:Z'
 
 
 def parse_and_save(clients_data: list, template_path: str):
@@ -29,21 +29,23 @@ def parse_and_save(clients_data: list, template_path: str):
         # --- substitute the placeholder.
         print(f"Generate context variables for...{client_data['RECURRENTE']}")
         context = {
-            'CORTE': client_data['CORTE'],
-            'PREFIX': client_data['PREFIX'],
-            'GENDER': client_data['GENDER'],
-            'RECURRENTE': client_data['RECURRENTE'],
-            'CI': client_data['CI'],
-            'ISAPRE': client_data['ISAPRE'],
-            'RUT_ISAPRE': client_data['RUT ISAPRE'],
-            'REP_ISAPRE': client_data['REP ISAPRE'],
-            'DOMICILIO_ISAPRE': client_data['DOMICILIO ISAPRE'],
-            'PLAN': client_data['PLAN'],
-            'ALZA': client_data['ALZA'],
-            'FECHA_CARTA': client_data['FECHA CARTA'],
-            'PB': client_data['PB'],
-            'PBR': client_data['PBR'],
-            'MES_OBJECIÓN': client_data["MES OBJECIÓN"]
+            "CORTE": client_data["CORTE"],
+            "TITLE": client_data["TITLE"],
+            "RECURRENTE": client_data["RECURRENTE"],
+            "ROL": int(client_data["ROL"]),
+            "ERA": int(client_data["ERA"]),
+            "GENDER": client_data["GENDER"],
+            # "CI": client_data["CI"],
+            # "ISAPRE": client_data["ISAPRE"],
+            # "RUT_ISAPRE": client_data["RUT_ISAPRE"],
+            # "REP_ISAPRE": client_data["REP_ISAPRE"],
+            # "DOMICILIO_ISAPRE": client_data["DOMICILIO_ISAPRE"],
+            # "PLAN": client_data["PLAN"],
+            # "ALZA": client_data["ALZA"],
+            "FECHA_CARTA": client_data["FECHA_CARTA"],
+            # "PB": client_data["PB"],
+            # "PBR": client_data["PBR"],
+            # "MES": client_data["MES"]
         }
         # --- Converts docx into pdf API. Note: secrey key in conda scripting env
         convertapi.api_secret = os.getenv("SECRET_KEY")
@@ -57,7 +59,7 @@ def parse_and_save(clients_data: list, template_path: str):
         doc_template.render(context)
 
         # --- Save client's files (docx & pdf)
-        file_name = f"ID {client_data['ID']} - C.A. DE {client_data['CORTE']} - {client_data['RECURRENTE']} con {client_data['ISAPRE']}"
+        file_name = f"ID {client_data['UID']} - {int(client_data['ROL'])}-{int(client_data['ERA'])} - Incompetencia en examen de admisibilidad - {client_data['RECURRENTE']} con {client_data['ISAPRE']} - C.A. DE {client_data['CORTE']}"
 
         print(f"Saving {file_name} in DOCX...")
         docx_file_path = f"docx_autoescrito/{file_name}.docx"
@@ -68,6 +70,9 @@ def parse_and_save(clients_data: list, template_path: str):
         pdf_file_path = f"pdf_autoescrito/{file_name}.pdf"
         pdf.file.save(pdf_file_path)
 
+        print()
+        # exit()  # For testing
+
     print("Success script run.")
     return 0
 
@@ -77,8 +82,7 @@ def download_gsheet(service):
     sheet = service.spreadsheets()
 
     # Get page or sheet (file)?
-    result = sheet.values().get(spreadsheetId=SPREADSHEET_ID,
-                                range=RANGE_NAME).execute()
+    result = sheet.values().get(spreadsheetId=SPREADSHEET_ID, range=RANGE_NAME).execute()
     values = result.get('values', [])
 
     if not values:

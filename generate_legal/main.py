@@ -49,7 +49,7 @@ def main():
     ]]
 
     # --- Filter df by column value == True
-    df_filtered = df[df["INGRESAR"]]
+    df_filtered = df[df["SCRIPT"]]
 
     # --- df to list of dicts, each dict element in list is a different client's data
     # --- needs to be a different docs for each client
@@ -57,8 +57,7 @@ def main():
 
     # --- File Generator ---
     # --- Parse template & Save docx & pdf files ---
-    # parse_and_save(clients_data_list, Path("templates/template.docx"))  # RP
-    parse_and_save(clients_data_list, Path("templates/template_fun.docx"))  # FUN
+    parse_and_save(clients_data_list, Path("templates/incompetencia_examen_admisibilidad_template.docx"))  # RP
 
 
 if __name__ == "__main__":
